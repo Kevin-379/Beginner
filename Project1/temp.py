@@ -1,25 +1,81 @@
-def gridSearch(G, P):
-    b = True
-    for i in range(R - r + 1):
-        for j in range(C - c + 1):
-            for k in range(r):
-                if G[i + k][j:j + c] != P[k]:
-                    b = False
-                    break
-            if b is True:
-                return 'YES'
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class Linkedlist():
+    def __init__(self):
+        self.head = None
+
+    def add(self, data):
+        temp = Node(data)
+        temp.next = self.head
+        self.head = temp
+
+    def find(self, item):
+        current = self.head
+        found = False
+        while current is not None:
+            if current.data == item:
+                found = True
+                break
             else:
-                b = True
-    if b is True:
-        return 'NO'
+                current = current.next
+        if found:
+            print("item is present in list")
+        else:
+            print("item is not present in the list")
 
+    def remove(self, item):
+        current = self.head
+        previous = None
+        found = False
+        while current is not None:
+            if current.data == item:
+                found = True
+                break
+            else:
+                previous = current
+                current = current.next
+        if found:
+            previous.next = current.next
+        else:
+            print("item is not present in the list")
 
-R = 10
-C = 10
-r = 3
-c = 4
-G = ['7283455864', '6731158619', '8988242643', '3830589324', '2229505813', '5633845374', '6473530293', '7053106601',
-     '0834282956', '4607924137']
-P = ['9505', '3845', '3530']
-print(gridSearch(G, P))
-print(G[4][3:3 + 4], P[0])
+    def printlist(self):
+        l="["
+        current = self.head
+        while current.next is not None:
+            l+=str(current.data)+","
+            current = current.next
+        l+=str(current.data)
+        l+="]"
+        print(l)
+
+    def length(self):
+        count = 0
+        current = self.head
+        while current is not None:
+            count += 1
+            current = current.next
+        print(count)
+
+    def append(self, data):
+        temp = Node(None)
+        temp.next = self.head
+        self.head = temp
+        current = self.head
+        while current.next is not None:
+            current.data = current.next.data
+            current = current.next
+        current.data = data
+
+linkedlist = Linkedlist()
+linkedlist.add(4)
+linkedlist.add(1)
+linkedlist.length()
+linkedlist.add(5)
+linkedlist.remove(1)
+linkedlist.append(1)
+linkedlist.printlist()
