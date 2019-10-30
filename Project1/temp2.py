@@ -1,66 +1,35 @@
 def longestcommonsubsequence(a, b):
     lcs = []
-    for i in range(len(a)):
+    for i in range(len(a) + 1):
         row = []
-        for j in range(len(b)):
+        for j in range(len(b) + 1):
             row.append(0)
         lcs.append(row)
     i = 1
     j = 1
-    if a[0] == b[0]:
-        lcs[0][0] = 1
-    while i < len(a):
-        if lcs[i - 1][0] == 1:
-            lcs[i][0] = 1
-        elif a[i] == b[0]:
-            lcs[i][0] = 1
-        i += 1
-    while j < len(b):
-        if lcs[0][j - 1] == 1:
-            lcs[0][j] = 1
-        elif a[0] == b[j]:
-            lcs[0][j] = 1
-        j += 1
-    i = 1
-    j = 1
-    while i < len(a):
-        while j < len(b):
-            if a[i] == b[j]:
+    while i < len(a) + 1:
+        while j < len(b) + 1:
+            if a[i - 1] == b[j - 1]:
                 lcs[i][j] = 1 + lcs[i - 1][j - 1]
             else:
                 lcs[i][j] = max(lcs[i][j - 1], lcs[i - 1][j])
             j += 1
         i += 1
         j = 1
-    i = len(a) - 1
-    j = len(b) - 1
+    i = len(a)
+    j = len(b)
     s = []
     while i > 0 and j > 0:
         if lcs[i][j] == 0:
             break
-        if lcs[i][j] == lcs[i][j - 1]:
-            j = j - 1
-        elif lcs[i][j] == lcs[i - 1][j]:
-            i = i - 1
+        if lcs[i][j] == lcs[i - 1][j]:
+            i -= 1
+        elif lcs[i][j] == lcs[i][j - 1]:
+            j -= 1
         else:
-            s.append(a[i])
-            i = i - 1
-            j = j - 1
-    if lcs[i][j] == 1:
-        if j == 0 and i != 0:
-            while i >= 0:
-                if lcs[i][0] == 0:
-                    s.append(a[i + 1])
-                    break
-                i = i - 1
-        elif i == 0 and j != 0:
-            while j >= 0:
-                if lcs[0][j] == 0:
-                    s.append(b[j + 1])
-                    break
-                j = j - 1
-        else:
-            s.append(a[0])
+            s.append(a[i - 1])
+            i -= 1
+            j -= 1
     return s[::-1]
 
 
