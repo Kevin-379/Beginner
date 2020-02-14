@@ -1,25 +1,36 @@
-def gridSearch(G, P):
-    b = True
-    for i in range(R - r + 1):
-        for j in range(C - c + 1):
-            for k in range(r):
-                if G[i + k][j:j + c] != P[k]:
-                    b = False
-                    break
-            if b is True:
-                return 'YES'
-            else:
-                b = True
-    if b is True:
-        return 'NO'
+N = int(input(""))
+edge = {str(i+1): [] for i in range(N)}
+for i in range(N - 1):
+    x, y = str(input("")).split()
+    edge[x].append(y)
+    edge[y].append(x)
+vertexValue = list(map(int, input("").split()))
+path = []
 
 
-R = 10
-C = 10
-r = 3
-c = 4
-G = ['7283455864', '6731158619', '8988242643', '3830589324', '2229505813', '5633845374', '6473530293', '7053106601',
-     '0834282956', '4607924137']
-P = ['9505', '3845', '3530']
-print(gridSearch(G, P))
-print(G[4][3:3 + 4], P[0])
+def dfs(a, total,  pth, dnt):
+    global paths, path
+    for i in edge[a]:
+        if i not in dnt[a] and i not in pth:
+            pth.append(i)
+            dnt[a].add(i)
+            for t in pth:
+                total += vertexValue[int(t)-1]
+            return dfs(i, total, pth, dnt)
+    path.append(total)
+    try:
+        for t in pth:
+            total -= vertexValue[int(t) - 1]
+        del pth[-1]
+        dfs(pth[-1], total, pth, dnt)
+    except IndexError:
+        return
+
+
+for i in range(1, N+1):
+    a = str(i)
+    pth = [a]
+    total = vertexValue[int(a) - 1]
+    dnt = {str(_): set() for _ in range(1, N + 1)}
+    dfs(a, total, pth, dnt)
+print(max(path))
